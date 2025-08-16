@@ -1,0 +1,34 @@
+# Maven / Gradle build output
+**/target/
+**/build/
+
+# Exception: keep wrapper JAR if present
+!**/.mvn/wrapper/maven-wrapper.jar
+
+# IntelliJ IDEA
+**/.idea/
+*.iml
+*.ipr
+*.iws
+
+# Eclipse
+**/.classpath
+**/.project
+**/.settings/
+**/.factorypath
+**/.apt_generated
+**/.springBeans
+**/.sts4-cache
+
+# NetBeans
+**/nbproject/private/
+**/nbbuild/
+**/dist/
+**/nbdist/
+**/.nb-gradle/
+
+# VS Code
+**/.vscode/
+
+# macOS
+.DS_Store
