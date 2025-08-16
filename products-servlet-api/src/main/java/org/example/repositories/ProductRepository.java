@@ -10,6 +10,13 @@ public class ProductRepository {
     private final List<Product> products = new ArrayList<>();
     private int nextID = 1;
 
+
+
+    public ProductRepository() {
+        products.add(new Product(0, "Chair", 400, 2));
+    }
+
+
     public List<Product> getAll() {
         return products;
     }
@@ -43,5 +50,5 @@ public class ProductRepository {
     public boolean delete (int id) {
         return products.removeIf(product -> product.getId() == id);
     }
-    
+
 }
