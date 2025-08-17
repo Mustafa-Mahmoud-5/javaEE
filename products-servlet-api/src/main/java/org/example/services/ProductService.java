@@ -19,4 +19,10 @@ public class ProductService {
         }
         return p;
     }
+
+
+    public void addProduct(Product product) {
+        product.validate();
+        repo.save(product);
+    }
 }

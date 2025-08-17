@@ -1,10 +1,18 @@
 package org.example.models;
 
+import org.example.errors.ApiException;
+
 public class Product {
     private int id;
     private String name;
     private double price;
     private int quantity;
+
+
+    // important for deserializing by jackson
+    public Product() {
+
+    }
 
     public Product(int id, String name, double price, int quantity) {
         this.id = id;
@@ -29,4 +37,18 @@ public class Product {
     public int getQuantity() { return quantity; }
 
     public void setQuantity(int quantity) { this.quantity = quantity; }
+
+    public void validate() {
+        if(name == null || name.isEmpty()) {
+            throw new ApiException(400, "name must not be null");
+        }
+
+        if(price <= 0) {
+            throw new ApiException(400, "Price must be greater than 0");
+        }
+
+        if(quantity <= 0) {
+            throw new ApiException(400, "Quantity must be greater than 0");
+        }
+    }
 }

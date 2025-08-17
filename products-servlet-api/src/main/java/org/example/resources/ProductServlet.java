@@ -30,6 +30,7 @@ public class ProductServlet extends HttpServlet {
             if(path != null && !path.equals("/")) {
                 int productId = Integer.parseInt(path.substring(1));
                 Product product = productService.getProductById(productId);
+                resp.setStatus(200);
                 mapper.writeValue(resp.getWriter(), product);
             } else {
                 List<Product> products = productService.getAllProducts();
@@ -40,6 +41,19 @@ public class ProductServlet extends HttpServlet {
         }
     }
 
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            Product product = mapper.readValue(req.getReader(), Product.class);
+            productService.addProduct(product);
+            resp.setContentType("application/json");
+            resp.setStatus(HttpServletResponse.SC_CREATED);
+            mapper.writeValue(resp.getWriter(), "Product Created Successfully");
+        } catch (Exception e) {
+            handleError(resp, e);
+        }
+    }
 
     private void handleError(HttpServletResponse resp, Exception e) throws IOException {
         int status;
