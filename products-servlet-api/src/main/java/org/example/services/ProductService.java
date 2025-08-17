@@ -49,6 +49,6 @@ public class ProductService {
 
         repo.update(product);
 
-        return updatedProduct;
+        return product;
     }
 }
