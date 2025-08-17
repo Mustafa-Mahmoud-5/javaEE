@@ -11,6 +11,7 @@ import org.example.models.Product;
 import org.example.services.ProductService;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,10 +31,11 @@ public class ProductServlet extends HttpServlet {
             if(path != null && !path.equals("/")) {
                 int productId = Integer.parseInt(path.substring(1));
                 Product product = productService.getProductById(productId);
-                resp.setStatus(200);
+                resp.setStatus(HttpServletResponse.SC_OK);
                 mapper.writeValue(resp.getWriter(), product);
             } else {
                 List<Product> products = productService.getAllProducts();
+                resp.setStatus(HttpServletResponse.SC_OK);
                 mapper.writeValue(resp.getWriter(), products);
             }
         } catch (Exception e) {
@@ -67,6 +69,34 @@ public class ProductServlet extends HttpServlet {
             resp.setContentType("application/json");
             resp.setStatus(HttpServletResponse.SC_OK);
             mapper.writeValue(resp.getWriter(), "Product Deleted Successfully");
+        } catch (Exception e) {
+            handleError(resp, e);
+        }
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            String path = req.getPathInfo();
+            if(path == null || path.equals("/")) {
+                throw new ApiException(HttpServletResponse.SC_BAD_REQUEST, "product id path param is mandatory");
+            }
+
+            int productId = Integer.parseInt(path.substring(1));
+            Product product = mapper.readValue(req.getReader(), Product.class);
+
+            Product updatedProduct = productService.updateProduct(productId, product);
+
+
+
+            resp.setContentType("application/json");
+            resp.setStatus(HttpServletResponse.SC_OK);
+
+            Map<String, Object> res = new HashMap<>();
+            res.put("message", "Product updated Successfully");
+            res.put("product", updatedProduct);
+
+            mapper.writeValue(resp.getWriter(), res);
         } catch (Exception e) {
             handleError(resp, e);
         }
