@@ -55,6 +55,23 @@ public class ProductServlet extends HttpServlet {
         }
     }
 
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            String path = req.getPathInfo();
+            if(path == null || path.equals("/")) throw new ApiException(HttpServletResponse.SC_BAD_REQUEST, "product id path param is mandatory");
+
+            int productId = Integer.parseInt(path.substring(1));
+            productService.deleteProduct(productId);
+
+            resp.setContentType("application/json");
+            resp.setStatus(HttpServletResponse.SC_OK);
+            mapper.writeValue(resp.getWriter(), "Product Deleted Successfully");
+        } catch (Exception e) {
+            handleError(resp, e);
+        }
+    }
+
     private void handleError(HttpServletResponse resp, Exception e) throws IOException {
         int status;
         String message;

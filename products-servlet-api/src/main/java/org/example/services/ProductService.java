@@ -25,4 +25,11 @@ public class ProductService {
         product.validate();
         repo.save(product);
     }
+
+    public void deleteProduct(int id) {
+        boolean isDeleted = repo.delete(id);
+        if(!isDeleted) {
+            throw new ApiException(404, "Product with given id is not found");
+        }
+    }
 }
