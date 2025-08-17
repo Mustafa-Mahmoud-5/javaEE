@@ -21,12 +21,20 @@ public class ProductServlet extends HttpServlet {
 
 
     // GET /products
+    // GET /products/id
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             resp.setContentType("application/json");
-            List<Product> products = productService.getAllProducts();
-            mapper.writeValue(resp.getWriter(), products);
+            String path = req.getPathInfo();
+            if(path != null && !path.equals("/")) {
+                int productId = Integer.parseInt(path.substring(1));
+                Product product = productService.getProductById(productId);
+                mapper.writeValue(resp.getWriter(), product);
+            } else {
+                List<Product> products = productService.getAllProducts();
+                mapper.writeValue(resp.getWriter(), products);
+            }
         } catch (Exception e) {
             handleError(resp, e);
         }
