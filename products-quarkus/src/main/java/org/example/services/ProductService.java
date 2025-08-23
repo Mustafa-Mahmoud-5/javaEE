@@ -1,5 +1,6 @@
 package org.example.services;
 
+import jakarta.ws.rs.core.Response;
 import org.example.errors.ApiException;
 import org.example.models.Product;
 import org.example.repositories.ProductRepository;
@@ -24,6 +25,24 @@ public class ProductService {
     public void addProduct(Product product) {
         product.validate();
         repo.save(product);
+    }
+
+    public Product updateProduct(int id, Product updatedProduct) {
+        Product product = repo.getById(id);
+        if(product == null) {
+            throw new ApiException(Response.Status.NOT_FOUND.getStatusCode(), "Product with given id is not found");
+        }
+
+        updatedProduct.validate();
+
+        product.setId(id);
+        product.setName(updatedProduct.getName());
+        product.setPrice(updatedProduct.getPrice());
+        product.setQuantity(updatedProduct.getQuantity());
+
+        repo.update(product);
+
+        return product;
     }
 
     public void deleteProduct(int id) {

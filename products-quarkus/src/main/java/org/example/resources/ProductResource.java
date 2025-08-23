@@ -31,7 +31,7 @@ public class ProductResource {
         }
     }
 
-    
+
     // GET /products/id
     @GET
     @Path("/{id}")
@@ -41,6 +41,35 @@ public class ProductResource {
             return Response.status(Response.Status.OK).entity(product).build();
         } catch (Exception e) {
             return handleError(e);
+        }
+    }
+
+
+    @POST
+    @Path("/")
+    public Response addProduct(Product product) {
+        try {
+            productService.addProduct(product);
+            return Response.status(Response.Status.CREATED.getStatusCode()).entity("Product Created Successfully").build();
+        } catch (Exception e) {
+            return handleError(e);
+        }
+    }
+
+
+    @PUT
+    @Path("/{id}")
+    public Response putProduct(@PathParam("id") int id,  Product product) {
+        try {
+          Product updateProduct = productService.updateProduct(id, product);
+
+          Map<String, Object> res = new HashMap<>();
+          res.put("message", "Product Updated Successfully");
+          res.put("product", updateProduct);
+
+          return Response.status(Response.Status.OK).entity(res).build();
+        } catch (Exception e) {
+            return  handleError(e);
         }
     }
 
