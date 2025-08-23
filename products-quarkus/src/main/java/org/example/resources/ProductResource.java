@@ -75,6 +75,19 @@ public class ProductResource {
 
 
 
+
+    @DELETE
+    @Path("/{id}")
+    public Response deleteProduct(@PathParam("id") int id) {
+        try {
+            productService.deleteProduct(id);
+            return Response.status(Response.Status.OK).entity("Product Deleted Successfully").build();
+        } catch (Exception e) {
+            return handleError(e);
+        }
+    }
+
+
     public Response handleError(Exception e) {
         int status;
         String message;
