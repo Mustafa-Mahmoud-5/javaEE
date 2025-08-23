@@ -1,6 +1,5 @@
 package org.example.services;
 
-import jakarta.servlet.http.HttpServletResponse;
 import org.example.errors.ApiException;
 import org.example.models.Product;
 import org.example.repositories.ProductRepository;
@@ -32,23 +31,5 @@ public class ProductService {
         if(!isDeleted) {
             throw new ApiException(404, "Product with given id is not found");
         }
-    }
-
-    public Product updateProduct(int id, Product updatedProduct) {
-        Product product = repo.getById(id);
-        if(product == null) {
-            throw new ApiException(HttpServletResponse.SC_NOT_FOUND, "Product with given id is not found");
-        }
-
-        updatedProduct.validate();
-
-        product.setId(id);
-        product.setName(updatedProduct.getName());
-        product.setPrice(updatedProduct.getPrice());
-        product.setQuantity(updatedProduct.getQuantity());
-
-        repo.update(product);
-
-        return product;
     }
 }
